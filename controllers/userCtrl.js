@@ -107,12 +107,14 @@ async function login(req, res, next) {
                             if (newSession.affectedRows) {
                                 return res.status(200).json({ token: token });
                             } else {
-                                return res.status(500).json({ error: "error while registering user's connection parameters" });
+                                return res.status(500).json({ error: "error while login to user's account" });
                             }
                         } catch (error) {
-                            return res.status(500).json({ error });
+                            return res.status(500).json({ error: error.message, stack: error.stack });
                         }
-                    } catch (error) {}
+                    } catch (error) {
+                        res.status(500).json({ error: error.message, stack: error.stack });
+                    }
                 }
             } catch (error) {
                 res.status(500).json({ error: error.message });
